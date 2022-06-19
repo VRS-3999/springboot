@@ -1,0 +1,27 @@
+version: '3'
+services:
+  webapp:
+    build:
+      context: ./hotsauces
+      args:
+        - JAR_FILE=./build/libs/hotsauces-0.0.1-SNAPSHOT.jar
+    # ports:
+    #   - 8080:8080
+    networks:
+     - backend
+     
+  nginx-lb:
+    container_name: nginx-lb
+    image: nginx:1.13
+    restart: always
+    ports:
+     - 80:80
+     - 443:443
+    volumes:
+     - ./nginx/conf.d:/etc/nginx/conf.d
+    networks:
+     - backend
+
+networks:
+  backend:
+    driver: bridge
